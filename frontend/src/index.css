@@ -1,0 +1,255 @@
+/* @import 'bootstrap/dist/css/bootstrap.min.css'; */
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f8f9fa;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Custom styles for Review&RATE */
+.purple-accent {
+  color: #6f42c1;
+}
+
+.purple-bg {
+  background-color: #6f42c1;
+}
+
+.purple-border {
+  border-color: #6f42c1;
+}
+
+.company-card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.company-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.company-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.company-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.rating-stars {
+  color: #ffc107;
+}
+
+.search-input {
+  border-radius: 25px;
+  border: 2px solid #e9ecef;
+  padding: 10px 20px;
+}
+
+.search-input:focus {
+  border-color: #6f42c1;
+  box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.25);
+}
+
+.btn-purple {
+  background: linear-gradient(90deg, #6f42c1, #007bff); /* Purple to Blue */
+  border: none; /* optional, gradient looks better without border */
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-weight: 500;
+  color: #fff; /* make text white for contrast */
+  transition: opacity 0.3s ease;
+}
+
+.btn-purple:hover {
+  background-color: #5a32a3;
+  border-color: #5a32a3;
+}
+
+.btn-outline-gray {
+  background:#555;
+  border-color: #6c757d;
+  color: #ffffff;
+  border-radius: 5px;
+  padding: 8px 20px;
+}
+
+.btn-outline-gray:hover {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-close-modal {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #6c757d;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-close-modal:hover {
+  background-color: #f8f9fa;
+  color: #495057;
+}
+
+.city-input {
+  border-radius: 25px;
+  border: 2px solid #e9ecef;
+  padding: 10px 20px;
+}
+
+.city-input:focus {
+  border-color: #6f42c1;
+  box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.25);
+}
+
+.sort-dropdown {
+  border-radius: 25px;
+  border: 2px solid #e9ecef;
+  padding: 8px 15px;
+}
+
+.sort-dropdown:focus {
+  border-color: #6f42c1;
+  box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.25);
+}
+
+/* Detail Review Styles */
+
+.company-profile-card {
+  background-color: white;
+  border: 1px solid #e9ecef;
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.company-logo-large {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.company-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.company-address {
+  font-size: 0.95rem;
+}
+
+.reviews-section {
+  margin-top: 20px;
+}
+
+.reviews-header h5 {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.review-card {
+  background-color: white;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.review-card:hover {
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+}
+
+.review-avatar img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+.reviewer-name {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0;
+}
+
+.review-date {
+  font-size: 0.85rem;
+  margin-bottom: 0;
+}
+
+.review-rating {
+  font-size: 0.9rem;
+}
+
+.review-text {
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+
+.btn-outline-purple {
+  border-color: #6f42c1;
+  color: #6f42c1;
+  border-radius: 25px;
+  padding: 10px 25px;
+  font-weight: 500;
+}
+
+.btn-outline-purple:hover {
+  background-color: #6f42c1;
+  border-color: #6f42c1;
+  color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .company-profile-card .row {
+    text-align: center;
+  }
+  
+  .company-profile-card .col-md-3,
+  .company-profile-card .col-md-2 {
+    text-align: center !important;
+    margin-top: 15px;
+  }
+}
