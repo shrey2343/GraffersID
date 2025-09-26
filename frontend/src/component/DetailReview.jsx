@@ -1,9 +1,33 @@
 import React from 'react';
 import AddReview from './AddReview';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import API_BASE_URL from '../config/api';
 const DetailReview = ({ company, onClose, onReviewUpdate }) => {
     const [showAddReview, setShowAddReview] = useState(false);  
     const [reviews, setReviews] = useState(company.reviews || []);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+      const load = async () => {
+        try{
+          setLoading(true);
+          setError('');
+          if (!company?._id) return;
+          const resp = await axios.get(`${API_BASE_URL}/company/${company._id}/get-review`);
+          if (resp.status === 200 && Array.isArray(resp.data)){
+            setReviews(resp.data);
+          }
+        }catch(err){
+          setError(err?.response?.data?.msg || 'Failed to load reviews');
+        }finally{
+          setLoading(false);
+        }
+      };
+      load();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [company?._id]);
 
     const handleAddReview = (newReview) => {
         // Add the new review to the reviews array (API already called in AddReview component)
@@ -68,6 +92,40 @@ const DetailReview = ({ company, onClose, onReviewUpdate }) => {
     }
 
     return stars;
+  };
+
+  const handleLike = async (reviewId) => {
+    if (!reviewId){
+      alert('Invalid review');
+      return;
+    }
+    try{
+      const resp = await axios.post(`${API_BASE_URL}/company/${company._id}/reviews/${reviewId}/like`);
+      if (resp.status === 200){
+        const { likes } = resp.data;
+        setReviews(prev => prev.map(r => r._id === reviewId ? { ...r, likes } : r));
+      }
+    }catch(err){
+      console.error('Like failed:', err);
+      alert(err?.response?.data?.msg || 'Failed to like review');
+    }
+  };
+
+  const handleShare = async (review) => {
+    const shareText = `${review.fullName} reviewed ${company.companyName}: "${review.subject}" - ${review.reviewText}`;
+    const shareUrl = window.location.href;
+    if (navigator.share){
+      try{
+        await navigator.share({ title: company.companyName, text: shareText, url: shareUrl });
+      }catch(e){ /* user cancelled */ }
+    } else {
+      try{
+        await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
+        alert('Link copied to clipboard');
+      }catch(e){
+        alert('Copy failed');
+      }
+    }
   };
 
   return (
@@ -151,6 +209,8 @@ const DetailReview = ({ company, onClose, onReviewUpdate }) => {
           <div className="reviews-section">
             <div className="reviews-header mb-3">
               <h5 className="text-muted">Result Found: {reviews.length}</h5>
+              {loading && <span className="text-muted ms-2">Loading…</span>}
+              {error && <div className="text-danger small">{error}</div>}
             </div>
 
             {/* Individual Reviews */}
@@ -176,6 +236,16 @@ const DetailReview = ({ company, onClose, onReviewUpdate }) => {
                         </div>
                       </div>
                       <p className="review-text">{review.reviewText}</p>
+                      <div className="d-flex align-items-center gap-3 mt-2">
+                        <button className="btn btn-sm btn-outline-purple" onClick={() => handleLike(review._id)}>
+                          <i className="far fa-thumbs-up me-1"></i>
+                          Like {typeof review.likes === 'number' ? `(${review.likes})` : ''}
+                        </button>
+                        <button className="btn btn-sm btn-outline-gray" onClick={() => handleShare(review)}>
+                          <i className="fas fa-share me-1"></i>
+                          Share
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

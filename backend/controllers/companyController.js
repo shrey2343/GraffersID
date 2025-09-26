@@ -100,6 +100,7 @@ const addReview = async (req, res) => {
       subject: req.body.subject,
       reviewText: req.body.reviewText,
       rating: req.body.rating,
+      likes: 0
     };
     company.reviews.push(newReview);
     await company.save(); 
@@ -123,6 +124,22 @@ const getAllReviews = async (req, res) => {
   }
 };
 
+const likeReview = async (req, res) => {
+  try {
+    const { companyid, reviewid } = req.params;
+    const company = await Company.findById(companyid);
+    if (!company) return res.status(404).json({ msg: 'Company not found' });
+    const review = company.reviews.id(reviewid);
+    if (!review) return res.status(404).json({ msg: 'Review not found' });
+    review.likes = (review.likes || 0) + 1;
+    await company.save();
+    res.status(200).json({ reviewId: reviewid, likes: review.likes });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ msg: err.message });
+  }
+};
+
 const deleteCompany = async (req, res) => {
   try {
     const { id } = req.params;
@@ -137,6 +154,6 @@ const deleteCompany = async (req, res) => {
 
 
 export const companyController={
-    getAllCompany,addCompany,getCompanyById,addReview,getAllReviews,deleteCompany
+    getAllCompany,addCompany,getCompanyById,addReview,getAllReviews,deleteCompany,likeReview
 
 }

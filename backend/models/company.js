@@ -4,6 +4,7 @@ const reviewSchema = new mongoose.Schema({
   subject: String,
   reviewText: String,
   rating: { type: Number, required: true, min: 1, max: 5 },
+  likes: { type: Number, default: 0 }
 }, { timestamps: true });
 const companySchema = mongoose.Schema({
     companyName:{
