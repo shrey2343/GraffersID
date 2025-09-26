@@ -1,4 +1,6 @@
 import Company from "../models/company.js";
+import cloudinary from "../config/cloudinary.js";
+import streamifier from "streamifier";
 
  const addCompany = async(req,res)=>{
    try{
@@ -12,8 +14,34 @@ import Company from "../models/company.js";
         }
         const fondedOn=req.body.foundedOn.split('T')[0];
 
-        const logoPath = req.file ? `/uploads/${req.file.filename}` : req.body.logo;
-        const company = await Company.create({...req.body, logo: logoPath, foundedOn: fondedOn});
+        let logoUrl = req.body.logo || "";
+        if (req.file && req.file.buffer) {
+            try {
+                // Upload buffer to Cloudinary
+                const uploadFromBuffer = () => new Promise((resolve, reject) => {
+                    const uploadStream = cloudinary.uploader.upload_stream(
+                        { folder: "grafferid/logos", resource_type: "image" },
+                        (error, result) => {
+                            if (error) return reject(error);
+                            return resolve(result);
+                        }
+                    );
+                    streamifier.createReadStream(req.file.buffer).pipe(uploadStream);
+                });
+
+                const uploadResult = await uploadFromBuffer();
+                logoUrl = uploadResult.secure_url;
+            } catch (uploadErr) {
+                console.error('Cloudinary upload failed:', uploadErr);
+                return res.status(502).json({ msg: 'Image upload failed', detail: uploadErr?.message || 'Unknown error' });
+            }
+        }
+
+        const company = await Company.create({
+            ...req.body,
+            logo: logoUrl,
+            foundedOn: fondedOn
+        });
         if(company){
             res.status(201).json(company);
         }
